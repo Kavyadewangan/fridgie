@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fridgie.com - Smart Food Saver</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #c9f7d9, #ffe6b3);
+      color: #333;
+    }
+
+    /* LOGIN PAGE */
+    #loginPage {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #9be7a1, #f5c27d);
+    }
+
+    .login-card {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 320px;
+    }
+
+    .login-card h1 {
+      margin-bottom: 1rem;
+      color: #2e8b57;
+    }
+
+    .login-card input, .login-card button {
+      width: 100%;
+      padding: 0.8rem;
+      margin: 0.5rem 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .login-card button {
+      background-color: #2e8b57;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+    }
+
+    .login-card button:hover {
+      background-color: #256944;
+    }
+
+    /* MAIN PAGE */
+    #mainPage {
+      display: none;
+      padding: 1rem 2rem;
+    }
+
+    header {
+      text-align: center;
+      background: #2e8b57;
+      color: white;
+      padding: 1rem 0;
+      border-radius: 0 0 15px 15px;
+    }
+
+    header h2 {
+      margin: 0;
+    }
+
+    .section {
+      background: white;
+      border-radius: 12px;
+      margin: 2rem auto;
+      padding: 1.5rem;
+      max-width: 900px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .section h3 {
+      color: #2e8b57;
+      margin-bottom: 1rem;
+    }
+
+    form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    form input, form button {
+      flex: 1 1 30%;
+      padding: 0.6rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    form button {
+      flex: 1 1 20%;
+      background-color: #2e8b57;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    form button:hover {
+      background-color: #256944;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0.5rem;
+    }
+
+    th, td {
+      padding: 0.7rem;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f5f5f5;
+    }
+
+    /* Recipes */
+    .recipes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .recipe-card {
+      flex: 1 1 250px;
+      background: #fefefe;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .recipe-card img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 0.5rem;
+    }
+
+    .recipe-card h4 {
+      margin: 0.3rem 0;
+      color: #2e8b57;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN PAGE -->
+  <div id="loginPage">
+    <div class="login-card">
+      <h1>🧊 Fridgie.com</h1>
+      <p>Smart Food Saver</p>
+      <input type="text" id="username" placeholder="Enter your name" required>
+      <input type="password" id="password" placeholder="Password" required>
+      <button onclick="login()">Login</button>
+      <p id="loginStatus"></p>
+    </div>
+  </div>
+
+  <!-- MAIN PAGE -->
+  <div id="mainPage">
+    <header>
+      <h2>Welcome to Fridgie 🍽️</h2>
+      <p>Manage your food smartly & reduce waste</p>
+    </header>
+
+    <!-- LEFTOVERS -->
+    <div class="section">
+      <h3>🥘 Leftovers</h3>
+      <form id="leftoverForm">
+        <input type="text" id="leftoverName" placeholder="Item name (e.g. Rice, Chapati)" required>
+        <input type="text" id="leftoverQty" placeholder="Quantity (e.g. 2 bowls)">
+        <input type="number" id="leftoverDays" placeholder="Days fresh" required>
+        <button type="submit">Add Leftover</button>
+      </form>
+      <table id="leftoverTable">
+        <thead><tr><th>Name</th><th>Quantity</th><th>Days Fresh</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <!-- PACKAGED -->
+    <div class="section">
+      <h3>📦 Packaged Items</h3>
+      <form id="packagedForm">
+        <input type="text" id="packageName" placeholder="Item name (e.g. Butter, Cheese)" required>
+        <input type="text" id="packageQty" placeholder="Quantity (e.g. 200g)">
+        <input type="date" id="packageExpiry" required>
+        <button type="submit">Add Packaged Item</button>
+      </form>
+      <table id="packageTable">
+        <thead><tr><th>Name</th><th>Quantity</th><th>Expiry Date</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <!-- VEGGIES -->
+    <div class="section">
+      <h3>🥦 Veggies</h3>
+      <form id="veggieForm">
+        <input type="text" id="veggieName" placeholder="Vegetable name (e.g. Tomato, Spinach)" required>
+        <input type="text" id="veggieQty" placeholder="Quantity (e.g. 500g)">
+        <input type="number" id="veggieDays" placeholder="Days fresh" required>
+        <button type="submit">Add Veggie</button>
+      </form>
+      <table id="veggieTable">
+        <thead><tr><th>Name</th><th>Quantity</th><th>Days Fresh</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <!-- RECIPES -->
+    <div class="section">
+      <h3>🍳 Recipes using All Available Foods</h3>
+      <div class="recipes" id="allRecipeList"></div>
+
+      <h3>⏳ Recipes for Soon-to-Expire Items</h3>
+      <div class="recipes" id="expiringRecipeList"></div>
+    </div>
+
+    <footer>
+      © 2025 Fridgie.com | Made with ❤️ for Hackathons
+    </footer>
+  </div>
+
+  <script>
+    const leftovers = [];
+    const packaged = [];
+    const veggies = [];
+
+    const recipes = [
+      { name: "Veg Fried Rice", ingredients: ["rice", "carrot", "peas", "onion"], img: "https://cdn-icons-png.flaticon.com/512/590/590836.png" },
+      { name: "Chapati Rolls", ingredients: ["chapati", "paneer", "onion"], img: "https://cdn-icons-png.flaticon.com/512/706/706195.png" },
+      { name: "Paneer Curry", ingredients: ["paneer", "tomato", "onion"], img: "https://cdn-icons-png.flaticon.com/512/859/859270.png" },
+      { name: "Dal Fry", ingredients: ["dal", "onion", "tomato"], img: "https://cdn-icons-png.flaticon.com/512/706/706164.png" },
+      { name: "Veg Soup", ingredients: ["carrot", "peas", "corn"], img: "https://cdn-icons-png.flaticon.com/512/706/706172.png" }
+    ];
+
+    function login() {
+      const user = document.getElementById("username").value.trim();
+      const pass = document.getElementById("password").value.trim();
+      if (user && pass) {
+        document.getElementById("loginPage").style.display = "none";
+        document.getElementById("mainPage").style.display = "block";
+      } else {
+        document.getElementById("loginStatus").textContent = "Enter username and password!";
+      }
+    }
+
+    // ADD LEFTOVER
+    document.getElementById("leftoverForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const name = document.getElementById("leftoverName").value.toLowerCase();
+      const qty = document.getElementById("leftoverQty").value;
+      const days = parseInt(document.getElementById("leftoverDays").value);
+      leftovers.push({ name, qty, days });
+      updateTable("leftoverTable", leftovers);
+      suggestRecipes();
+      e.target.reset();
+    });
+
+    // ADD PACKAGED
+    document.getElementById("packagedForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const name = document.getElementById("packageName").value.toLowerCase();
+      const qty = document.getElementById("packageQty").value;
+      const expiry = new Date(document.getElementById("packageExpiry").value);
+      packaged.push({ name, qty, expiry });
+      updateTable("packageTable", packaged);
+      suggestRecipes();
+      e.target.reset();
+    });
+
+    // ADD VEGGIES
+    document.getElementById("veggieForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const name = document.getElementById("veggieName").value.toLowerCase();
+      const qty = document.getElementById("veggieQty").value;
+      const days = parseInt(document.getElementById("veggieDays").value);
+      veggies.push({ name, qty, days });
+      updateTable("veggieTable", veggies);
+      suggestRecipes();
+      e.target.reset();
+    });
+
+    function updateTable(tableId, arr) {
+      const tbody = document.querySelector(`#${tableId} tbody`);
+      tbody.innerHTML = "";
+      arr.forEach(item => {
+        let row = "<tr>";
+        for (const val in item) {
+          row += `<td>${item[val]}</td>`;
+        }
+        row += "</tr>";
+        tbody.innerHTML += row;
+      });
+    }
+
+    function suggestRecipes() {
+      const allFoods = [...leftovers.map(i=>i.name), ...packaged.map(i=>i.name), ...veggies.map(i=>i.name)];
+      const expiringFoods = [
+        ...leftovers.filter(i=>i.days<=2).map(i=>i.name),
+        ...veggies.filter(i=>i.days<=2).map(i=>i.name),
+        ...packaged.filter(i=> {
+          const diff = (new Date(i.expiry)-new Date())/(1000*3600*24);
+          return diff <= 2;
+        }).map(i=>i.name)
+      ];
+
+      const allRecipes = recipes.filter(r => r.ingredients.some(ing => allFoods.includes(ing)));
+      const expiringRecipes = recipes.filter(r => r.ingredients.some(ing => expiringFoods.includes(ing)));
+
+      displayRecipes(allRecipes, "allRecipeList");
+      displayRecipes(expiringRecipes, "expiringRecipeList");
+    }
+
+    function displayRecipes(list, id) {
+      const container = document.getElementById(id);
+      container.innerHTML = "";
+      if (list.length === 0) {
+        container.innerHTML = "<p>No recipes found yet!</p>";
+      } else {
+        list.forEach(r => {
+          container.innerHTML += `
+            <div class="recipe-card">
+              <img src="${r.img}" alt="${r.name}">
+              <h4>${r.name}</h4>
+            </div>`;
+        });
+      }
+    }
+  </script>
+</body>
+</html>
