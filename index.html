@@ -1,171 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Fridgie.com - Smart Food Saver</title>
   <style>
     body {
       margin: 0;
       font-family: "Poppins", sans-serif;
-      background: linear-gradient(135deg, #c9f7d9, #ffe6b3);
-      color: #333;
+      background: linear-gradient(135deg,#c9f7d9,#ffe6b3);
+      color: #222;
     }
 
     /* LOGIN PAGE */
     #loginPage {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background: linear-gradient(135deg, #9be7a1, #f5c27d);
+      display:flex;justify-content:center;align-items:center;height:100vh;
+      background: linear-gradient(135deg,#9be7a1,#f5c27d);
     }
-
     .login-card {
-      background: white;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      text-align: center;
-      width: 320px;
+      background:white;padding:2rem;border-radius:12px;box-shadow:0 4px 10px rgba(0,0,0,0.12);
+      width:340px;text-align:center;
     }
-
-    .login-card h1 {
-      margin-bottom: 1rem;
-      color: #2e8b57;
-    }
-
-    .login-card input, .login-card button {
-      width: 100%;
-      padding: 0.8rem;
-      margin: 0.5rem 0;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-
-    .login-card button {
-      background-color: #2e8b57;
-      color: white;
-      font-weight: 600;
-      cursor: pointer;
-      border: none;
-    }
-
-    .login-card button:hover {
-      background-color: #256944;
-    }
+    .login-card h1{color:#2e8b57;margin-bottom:0.5rem;}
+    .login-card input, .login-card button{width:100%;padding:0.75rem;margin:0.5rem 0;border-radius:6px;border:1px solid #ccc;}
+    .login-card button{background:#2e8b57;color:#fff;border:none;cursor:pointer;font-weight:600;}
+    .login-card button:hover{background:#256944;}
 
     /* MAIN PAGE */
-    #mainPage {
-      display: none;
-      padding: 1rem 2rem;
-    }
+    #mainPage{display:none;padding:1rem 2rem 4rem;}
+    header{text-align:center;background:#2e8b57;color:white;padding:1rem 0;border-radius:0 0 12px 12px;}
+    header h2{margin:0;font-size:1.4rem;}
+    header p{margin:0.2rem 0 0;font-size:0.95rem;opacity:0.95;}
 
-    header {
-      text-align: center;
-      background: #2e8b57;
-      color: white;
-      padding: 1rem 0;
-      border-radius: 0 0 15px 15px;
-    }
+    .section{background:white;border-radius:12px;margin:1.6rem auto;padding:1.2rem;max-width:980px;box-shadow:0 4px 12px rgba(0,0,0,0.08);}
+    .section h3{color:#2e8b57;margin:0 0 0.8rem 0;}
 
-    header h2 {
-      margin: 0;
-    }
+    form{display:flex;flex-wrap:wrap;gap:0.6rem;margin-bottom:0.8rem;}
+    form input, form button, form select {padding:0.6rem;border-radius:6px;border:1px solid #ccc;font-size:0.95rem;}
+    form input[type="text"], form input[type="date"]{flex:1 1 32%}
+    form input[type="number"]{flex:1 1 18%}
+    form button{flex:1 1 18%;background:#2e8b57;color:#fff;border:none;cursor:pointer}
+    form button:hover{background:#256944}
 
-    .section {
-      background: white;
-      border-radius: 12px;
-      margin: 2rem auto;
-      padding: 1.5rem;
-      max-width: 900px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
+    table{width:100%;border-collapse:collapse;margin-top:0.4rem}
+    th, td{padding:0.6rem;border-bottom:1px solid #eee;text-align:left}
+    th{background:#f5f5f5}
 
-    .section h3 {
-      color: #2e8b57;
-      margin-bottom: 1rem;
-    }
+    .recipes{display:flex;flex-wrap:wrap;gap:0.9rem}
+    .recipe-card{flex:1 1 260px;background:#fff;border-radius:10px;padding:0.9rem;box-shadow:0 2px 6px rgba(0,0,0,0.06);text-align:center}
+    .recipe-card img{width:84px;height:84px;object-fit:cover;border-radius:8px;display:block;margin:0 auto 0.5rem}
+    .recipe-card h4{margin:0.3rem;color:#2e8b57}
+    .recipe-card p{margin:0.2rem 0;font-size:0.9rem;color:#444}
+    .recipe-card a{display:inline-block;margin-top:0.5rem;text-decoration:none;color:#fff;background:#ff6b35;padding:6px 10px;border-radius:6px;font-size:0.9rem;}
 
-    form {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-    }
+    /* Barcode scanner UI */
+    #scannerOverlay{display:none;position:fixed;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:1200;align-items:center;justify-content:center}
+    #scannerBox{background:white;padding:1rem;border-radius:10px;max-width:720px;width:95%}
+    #videoElement{width:100%;border-radius:8px;background:#000}
 
-    form input, form button {
-      flex: 1 1 30%;
-      padding: 0.6rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-
-    form button {
-      flex: 1 1 20%;
-      background-color: #2e8b57;
-      color: white;
-      border: none;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    form button:hover {
-      background-color: #256944;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 0.5rem;
-    }
-
-    th, td {
-      padding: 0.7rem;
-      border-bottom: 1px solid #ddd;
-      text-align: left;
-    }
-
-    th {
-      background-color: #f5f5f5;
-    }
-
-    /* Recipes */
-    .recipes {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-
-    .recipe-card {
-      flex: 1 1 250px;
-      background: #fefefe;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-      padding: 1rem;
-      text-align: center;
-    }
-
-    .recipe-card img {
-      width: 80px;
-      height: 80px;
-      object-fit: cover;
-      border-radius: 50%;
-      margin-bottom: 0.5rem;
-    }
-
-    .recipe-card h4 {
-      margin: 0.3rem 0;
-      color: #2e8b57;
-    }
-
-    footer {
-      text-align: center;
-      padding: 1rem;
-      font-size: 0.9rem;
-      color: #555;
-    }
-
+    footer{text-align:center;color:#555;padding:1rem;margin-top:1rem}
+    .small{font-size:0.9rem;color:#666;margin-top:0.4rem}
+    .inline-note{font-size:0.85rem;color:#666;margin-left:6px}
   </style>
 </head>
 <body>
@@ -174,28 +69,28 @@
   <div id="loginPage">
     <div class="login-card">
       <h1>🧊 Fridgie.com</h1>
-      <p>Smart Food Saver</p>
-      <input type="text" id="username" placeholder="Enter your name" required>
-      <input type="password" id="password" placeholder="Password" required>
+      <p>Smart Food Saver — reduce waste</p>
+      <input id="username" placeholder="Your name" />
+      <input id="password" type="password" placeholder="Password" />
       <button onclick="login()">Login</button>
-      <p id="loginStatus"></p>
+      <p id="loginStatus" class="small"></p>
     </div>
   </div>
 
   <!-- MAIN PAGE -->
   <div id="mainPage">
     <header>
-      <h2>Welcome to Fridgie 🍽️</h2>
-      <p>Manage your food smartly & reduce waste</p>
+      <h2>Welcome to Fridgie</h2>
+      <p>Organize Leftovers, Packaged Items, Veggies & Fruits — get recipe suggestions</p>
     </header>
 
     <!-- LEFTOVERS -->
     <div class="section">
       <h3>🥘 Leftovers</h3>
       <form id="leftoverForm">
-        <input type="text" id="leftoverName" placeholder="Item name (e.g. Rice, Chapati)" required>
-        <input type="text" id="leftoverQty" placeholder="Quantity (e.g. 2 bowls)">
-        <input type="number" id="leftoverDays" placeholder="Days fresh" required>
+        <input type="text" id="leftoverName" placeholder="Item (e.g. Rice, Chapati)" required />
+        <input type="text" id="leftoverQty" placeholder="Qty (e.g. 2 bowls)" />
+        <input type="number" id="leftoverDays" placeholder="Days fresh" required />
         <button type="submit">Add Leftover</button>
       </form>
       <table id="leftoverTable">
@@ -204,15 +99,22 @@
       </table>
     </div>
 
-    <!-- PACKAGED -->
+    <!-- PACKAGED ITEMS -->
     <div class="section">
-      <h3>📦 Packaged Items</h3>
+      <h3>📦 Packaged Items (scan barcode or add manually)</h3>
+
       <form id="packagedForm">
-        <input type="text" id="packageName" placeholder="Item name (e.g. Butter, Cheese)" required>
-        <input type="text" id="packageQty" placeholder="Quantity (e.g. 200g)">
-        <input type="date" id="packageExpiry" required>
+        <input type="text" id="packageBarcode" placeholder="Barcode (paste or scan)" />
+        <button type="button" id="scanBarcodeBtn">Scan Barcode</button>
+
+        <input type="text" id="packageName" placeholder="Product name (auto from barcode)" required />
+        <input type="text" id="packageQty" placeholder="Quantity (e.g. 200 g)" />
+        <input type="date" id="packageExpiry" placeholder="Expiry date (or auto)" />
         <button type="submit">Add Packaged Item</button>
       </form>
+
+      <div class="small">Tip: If barcode is known in DB, expiry date auto-fills. You can still edit expiry manually.</div>
+
       <table id="packageTable">
         <thead><tr><th>Name</th><th>Quantity</th><th>Expiry Date</th></tr></thead>
         <tbody></tbody>
@@ -223,9 +125,9 @@
     <div class="section">
       <h3>🥦 Veggies</h3>
       <form id="veggieForm">
-        <input type="text" id="veggieName" placeholder="Vegetable name (e.g. Tomato, Spinach)" required>
-        <input type="text" id="veggieQty" placeholder="Quantity (e.g. 500g)">
-        <input type="number" id="veggieDays" placeholder="Days fresh" required>
+        <input type="text" id="veggieName" placeholder="Vegetable name (e.g. Tomato)" required />
+        <input type="text" id="veggieQty" placeholder="Qty (e.g. 500 g)" />
+        <input type="number" id="veggieDays" placeholder="Days fresh" required />
         <button type="submit">Add Veggie</button>
       </form>
       <table id="veggieTable">
@@ -234,126 +136,362 @@
       </table>
     </div>
 
+    <!-- FRUITS -->
+    <div class="section">
+      <h3>🍎 Fruits</h3>
+      <form id="fruitForm">
+        <input type="text" id="fruitName" placeholder="Fruit name (e.g. Mango)" required />
+        <input type="text" id="fruitQty" placeholder="Qty (e.g. 4 pcs)" />
+        <input type="number" id="fruitDays" placeholder="Days fresh" required />
+        <button type="submit">Add Fruit</button>
+      </form>
+      <table id="fruitTable">
+        <thead><tr><th>Name</th><th>Quantity</th><th>Days Fresh</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
     <!-- RECIPES -->
     <div class="section">
       <h3>🍳 Recipes using All Available Foods</h3>
-      <div class="recipes" id="allRecipeList"></div>
+      <div id="allRecipeList" class="recipes"></div>
 
-      <h3>⏳ Recipes for Soon-to-Expire Items</h3>
-      <div class="recipes" id="expiringRecipeList"></div>
+      <h3 style="margin-top:1.25rem">⏳ Recipes for Soon-to-Expire Items</h3>
+      <div id="expiringRecipeList" class="recipes"></div>
     </div>
 
-    <footer>
-      © 2025 Fridgie.com | Made with ❤️ for Hackathons
-    </footer>
+    <footer>© 2025 Fridgie.com — Built for hackathon</footer>
+  </div>
+
+  <!-- SCANNER OVERLAY -->
+  <div id="scannerOverlay">
+    <div id="scannerBox">
+      <h3 style="margin:0 0 0.6rem 0">Scan barcode (close to camera)</h3>
+      <video id="videoElement" autoplay muted playsinline></video>
+      <div style="margin-top:0.6rem;text-align:right">
+        <button onclick="closeScanner()" style="padding:0.45rem 0.7rem;border-radius:6px;border:none;background:#ff6b35;color:white;cursor:pointer">Close</button>
+      </div>
+    </div>
   </div>
 
   <script>
+    // ---------- Data stores ----------
     const leftovers = [];
     const packaged = [];
     const veggies = [];
+    const fruits = [];
 
+    // Mock barcode database: barcode -> { name, shelf_life_days }
+    const mockBarcodeDB = {
+      "8901234567890": { name: "butter", shelf_life_days: 60 },
+      "8909876543210": { name: "cheddar cheese", shelf_life_days: 40 },
+      "0123456789012": { name: "milk pack", shelf_life_days: 7 },
+      "1112223334445": { name: "instant noodles", shelf_life_days: 365 }
+      // Add more barcodes as needed
+    };
+
+    // Expanded recipe database includes difficulty and YouTube link
     const recipes = [
-      { name: "Veg Fried Rice", ingredients: ["rice", "carrot", "peas", "onion"], img: "https://cdn-icons-png.flaticon.com/512/590/590836.png" },
-      { name: "Chapati Rolls", ingredients: ["chapati", "paneer", "onion"], img: "https://cdn-icons-png.flaticon.com/512/706/706195.png" },
-      { name: "Paneer Curry", ingredients: ["paneer", "tomato", "onion"], img: "https://cdn-icons-png.flaticon.com/512/859/859270.png" },
-      { name: "Dal Fry", ingredients: ["dal", "onion", "tomato"], img: "https://cdn-icons-png.flaticon.com/512/706/706164.png" },
-      { name: "Veg Soup", ingredients: ["carrot", "peas", "corn"], img: "https://cdn-icons-png.flaticon.com/512/706/706172.png" }
+      { name: "Veg Fried Rice", ingredients: ["rice","carrot","peas","onion"], img: "https://cdn-icons-png.flaticon.com/512/590/590836.png", difficulty:"Easy", youtube: "https://www.youtube.com/watch?v=6m2w5QkGmwg" },
+      { name: "Chapati Rolls", ingredients: ["chapati","paneer","onion"], img: "https://cdn-icons-png.flaticon.com/512/706/706195.png", difficulty:"Moderate", youtube: "https://www.youtube.com/watch?v=4bZt6FZsB7A" },
+      { name: "Paneer Curry", ingredients: ["paneer","tomato","onion"], img: "https://cdn-icons-png.flaticon.com/512/859/859270.png", difficulty:"Moderate", youtube: "https://www.youtube.com/watch?v=dX1kFI9bQ1U" },
+      { name: "Dal Fry", ingredients: ["dal","onion","tomato"], img: "https://cdn-icons-png.flaticon.com/512/706/706164.png", difficulty:"Easy", youtube: "https://www.youtube.com/watch?v=2jVg0c3rR2o" },
+      { name: "Veg Soup", ingredients: ["carrot","peas","corn"], img: "https://cdn-icons-png.flaticon.com/512/706/706172.png", difficulty:"Easy", youtube: "https://www.youtube.com/watch?v=8gJfKpGZ0n8" },
+      { name: "Mixed Veg Curry", ingredients: ["carrot","potato","peas","onion"], img: "https://cdn-icons-png.flaticon.com/512/3075/3075977.png", difficulty:"Hard", youtube: "https://www.youtube.com/watch?v=ZtJ5W1k5JSM" }
     ];
 
+    // ---------- Login ----------
     function login() {
       const user = document.getElementById("username").value.trim();
       const pass = document.getElementById("password").value.trim();
+      const status = document.getElementById("loginStatus");
       if (user && pass) {
         document.getElementById("loginPage").style.display = "none";
         document.getElementById("mainPage").style.display = "block";
       } else {
-        document.getElementById("loginStatus").textContent = "Enter username and password!";
+        status.textContent = "Please enter username and password.";
       }
     }
 
-    // ADD LEFTOVER
+    // ---------- Add handlers for all forms ----------
     document.getElementById("leftoverForm").addEventListener("submit", e => {
       e.preventDefault();
-      const name = document.getElementById("leftoverName").value.toLowerCase();
-      const qty = document.getElementById("leftoverQty").value;
+      const name = document.getElementById("leftoverName").value.trim().toLowerCase();
+      const qty = document.getElementById("leftoverQty").value.trim();
       const days = parseInt(document.getElementById("leftoverDays").value);
       leftovers.push({ name, qty, days });
-      updateTable("leftoverTable", leftovers);
+      updateTable("leftoverTable", leftovers, ["name","qty","days"]);
       suggestRecipes();
       e.target.reset();
     });
 
-    // ADD PACKAGED
     document.getElementById("packagedForm").addEventListener("submit", e => {
       e.preventDefault();
-      const name = document.getElementById("packageName").value.toLowerCase();
-      const qty = document.getElementById("packageQty").value;
-      const expiry = new Date(document.getElementById("packageExpiry").value);
-      packaged.push({ name, qty, expiry });
-      updateTable("packageTable", packaged);
+      const barcode = document.getElementById("packageBarcode").value.trim();
+      let name = document.getElementById("packageName").value.trim().toLowerCase();
+      const qty = document.getElementById("packageQty").value.trim();
+      const expiryVal = document.getElementById("packageExpiry").value;
+
+      // if barcode present and in mock DB, override name and compute expiry if no manual expiry given
+      if (barcode && mockBarcodeDB[barcode]) {
+        const info = mockBarcodeDB[barcode];
+        name = info.name;
+        if (!expiryVal) {
+          const expiryDate = new Date();
+          expiryDate.setDate(expiryDate.getDate() + info.shelf_life_days);
+          packaged.push({ name, qty, expiry: expiryDate });
+        } else {
+          packaged.push({ name, qty, expiry: new Date(expiryVal) });
+        }
+      } else {
+        // manual add; require expiry date (user can fill)
+        if (expiryVal) {
+          packaged.push({ name, qty, expiry: new Date(expiryVal) });
+        } else {
+          // If no expiry provided, default to 30 days from today
+          const defaultExpiry = new Date();
+          defaultExpiry.setDate(defaultExpiry.getDate() + 30);
+          packaged.push({ name, qty, expiry: defaultExpiry });
+        }
+      }
+
+      // Reset UI values; ensure packageName updated
+      updateTable("packageTable", packaged, ["name","qty","expiry"]);
       suggestRecipes();
       e.target.reset();
+      document.getElementById("packageName").value = "";
     });
 
-    // ADD VEGGIES
     document.getElementById("veggieForm").addEventListener("submit", e => {
       e.preventDefault();
-      const name = document.getElementById("veggieName").value.toLowerCase();
-      const qty = document.getElementById("veggieQty").value;
+      const name = document.getElementById("veggieName").value.trim().toLowerCase();
+      const qty = document.getElementById("veggieQty").value.trim();
       const days = parseInt(document.getElementById("veggieDays").value);
       veggies.push({ name, qty, days });
-      updateTable("veggieTable", veggies);
+      updateTable("veggieTable", veggies, ["name","qty","days"]);
       suggestRecipes();
       e.target.reset();
     });
 
-    function updateTable(tableId, arr) {
+    document.getElementById("fruitForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const name = document.getElementById("fruitName").value.trim().toLowerCase();
+      const qty = document.getElementById("fruitQty").value.trim();
+      const days = parseInt(document.getElementById("fruitDays").value);
+      fruits.push({ name, qty, days });
+      updateTable("fruitTable", fruits, ["name","qty","days"]);
+      suggestRecipes();
+      e.target.reset();
+    });
+
+    function updateTable(tableId, arr, keys) {
       const tbody = document.querySelector(`#${tableId} tbody`);
       tbody.innerHTML = "";
       arr.forEach(item => {
-        let row = "<tr>";
-        for (const val in item) {
-          row += `<td>${item[val]}</td>`;
-        }
-        row += "</tr>";
-        tbody.innerHTML += row;
+        const tr = document.createElement("tr");
+        keys.forEach(k => {
+          let val = item[k];
+          if (val instanceof Date) val = val.toDateString();
+          tr.innerHTML += `<td>${val ?? ""}</td>`;
+        });
+        tbody.appendChild(tr);
       });
     }
 
-    function suggestRecipes() {
-      const allFoods = [...leftovers.map(i=>i.name), ...packaged.map(i=>i.name), ...veggies.map(i=>i.name)];
-      const expiringFoods = [
-        ...leftovers.filter(i=>i.days<=2).map(i=>i.name),
-        ...veggies.filter(i=>i.days<=2).map(i=>i.name),
-        ...packaged.filter(i=> {
-          const diff = (new Date(i.expiry)-new Date())/(1000*3600*24);
-          return diff <= 2;
-        }).map(i=>i.name)
-      ];
+    // ---------- Barcode scanning (Camera) ----------
+    const scanBtn = document.getElementById("scanBarcodeBtn");
+    const scannerOverlay = document.getElementById("scannerOverlay");
+    const videoEl = document.getElementById("videoElement");
+    let streamRef = null;
+    let barcodeDetectorSupported = ('BarcodeDetector' in window);
 
-      const allRecipes = recipes.filter(r => r.ingredients.some(ing => allFoods.includes(ing)));
-      const expiringRecipes = recipes.filter(r => r.ingredients.some(ing => expiringFoods.includes(ing)));
+    scanBtn.addEventListener("click", async () => {
+      // show overlay and start camera if BarcodeDetector supported
+      if (barcodeDetectorSupported) {
+        try {
+          scannerOverlay.style.display = "flex";
+          const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" }});
+          streamRef = stream;
+          videoEl.srcObject = stream;
+          await videoEl.play();
 
-      displayRecipes(allRecipes, "allRecipeList");
-      displayRecipes(expiringRecipes, "expiringRecipeList");
-    }
+          const detector = new BarcodeDetector({ formats: ['ean_13','ean_8','code_128','qr_code'] });
 
-    function displayRecipes(list, id) {
-      const container = document.getElementById(id);
-      container.innerHTML = "";
-      if (list.length === 0) {
-        container.innerHTML = "<p>No recipes found yet!</p>";
+          // continuously decode frames
+          const decodeLoop = async () => {
+            if (!streamRef) return;
+            try {
+              const detections = await detector.detect(videoEl);
+              if (detections && detections.length > 0) {
+                const code = detections[0].rawValue;
+                onBarcodeDetected(code);
+                closeScanner();
+                return;
+              }
+            } catch (err) {
+              // detection may throw on some cameras; ignore and continue
+            }
+            requestAnimationFrame(decodeLoop);
+          };
+          decodeLoop();
+        } catch (err) {
+          alert("Camera access needed to scan barcode. You can paste the barcode manually as fallback.");
+          closeScanner();
+        }
       } else {
-        list.forEach(r => {
-          container.innerHTML += `
-            <div class="recipe-card">
-              <img src="${r.img}" alt="${r.name}">
-              <h4>${r.name}</h4>
-            </div>`;
-        });
+        alert("Your browser doesn't support automated barcode scanning. Please paste the barcode manually into the 'Barcode' field.");
+      }
+    });
+
+    function onBarcodeDetected(code) {
+      document.getElementById("packageBarcode").value = code;
+      if (mockBarcodeDB[code]) {
+        const info = mockBarcodeDB[code];
+        document.getElementById("packageName").value = info.name;
+        // auto-fill expiry date (shelf-life)
+        const expiryDate = new Date();
+        expiryDate.setDate(expiryDate.getDate() + info.shelf_life_days);
+        document.getElementById("packageExpiry").value = expiryDate.toISOString().slice(0,10);
+      } else {
+        // if unknown, leave for manual entry
+        alert("Barcode scanned. Product not in local DB — please fill details or add to database.");
       }
     }
+
+    function closeScanner() {
+      scannerOverlay.style.display = "none";
+      if (streamRef) {
+        streamRef.getTracks().forEach(t => t.stop());
+        streamRef = null;
+      }
+      videoEl.srcObject = null;
+    }
+
+    // ---------- Recipe suggestion improvement ----------
+    function suggestRecipes() {
+      // All available foods (names)
+      const allFoods = [
+        ...leftovers.map(i => i.name),
+        ...packaged.map(i => i.name),
+        ...veggies.map(i => i.name),
+        ...fruits.map(i => i.name)
+      ].map(s => s.toLowerCase());
+
+      // Items expiring soon (<=2 days for leftovers/veggies/fruits; packaged: expiry diff)
+      const soon = [];
+      const today = new Date();
+
+      leftovers.forEach(i => { if (i.days <= 2) soon.push(i.name); });
+      veggies.forEach(i => { if (i.days <= 2) soon.push(i.name); });
+      fruits.forEach(i => { if (i.days <= 2) soon.push(i.name); });
+      packaged.forEach(i => {
+        const diff = (i.expiry - today) / (1000*3600*24);
+        if (diff <= 2) soon.push(i.name);
+      });
+
+      // Suggest recipes: match any ingredient in recipe
+      const allMatched = recipes.filter(r => r.ingredients.some(ing => allFoods.includes(ing)));
+      const soonMatched = recipes.filter(r => r.ingredients.some(ing => soon.includes(ing)));
+
+      // Group by difficulty for both lists
+      const groupedAll = groupByDifficulty(allMatched);
+      const groupedSoon = groupByDifficulty(soonMatched);
+
+      displayGroupedRecipes(groupedAll, "allRecipeList");
+      displayGroupedRecipes(groupedSoon, "expiringRecipeList");
+    }
+
+    function groupByDifficulty(recipeArray) {
+      const groups = { Easy: [], Moderate: [], Hard: [] };
+      recipeArray.forEach(r => {
+        const d = r.difficulty || "Moderate";
+        if (!groups[d]) groups[d] = [];
+        groups[d].push(r);
+      });
+      return groups;
+    }
+
+    function displayGroupedRecipes(groups, containerId) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = "";
+
+      const difficulties = ["Easy","Moderate","Hard"];
+      let any = false;
+      difficulties.forEach(diff => {
+        const list = groups[diff] || [];
+        if (list.length) {
+          any = true;
+          // header card for difficulty
+          const headerCard = document.createElement("div");
+          headerCard.className = "recipe-card";
+          headerCard.innerHTML = `<h4 style="margin-bottom:0.6rem">${diff} Recipes</h4>`;
+          list.forEach(r => {
+            headerCard.innerHTML += `
+              <div style="margin-top:0.6rem;border-top:1px dashed #eee;padding-top:0.6rem;">
+                <img src="${r.img}" alt="${r.name}" style="width:56px;height:56px;border-radius:8px;display:inline-block;vertical-align:middle;margin-right:8px;">
+                <strong style="vertical-align:middle">${r.name}</strong>
+                <div style="margin-top:0.4rem">
+                  <a href="${r.youtube}" target="_blank">Watch on YouTube</a>
+                </div>
+              </div>
+            `;
+          });
+          container.appendChild(headerCard);
+        }
+      });
+
+      if (!any) {
+        const card = document.createElement("div");
+        card.className = "recipe-card";
+        card.innerHTML = "<p>No recipes found for this category yet.</p>";
+        container.appendChild(card);
+      }
+    }
+
+    // ---------- Init / helpers ----------
+    // Keep UI reactive: suggestRecipes on load to show nothing initially
+    suggestRecipes();
+
+    // If user pastes barcode into field, auto-fill if known
+    document.getElementById("packageBarcode").addEventListener("change", (e) => {
+      const code = e.target.value.trim();
+      if (code && mockBarcodeDB[code]) {
+        const info = mockBarcodeDB[code];
+        document.getElementById("packageName").value = info.name;
+        const expiryDate = new Date();
+        expiryDate.setDate(expiryDate.getDate() + info.shelf_life_days);
+        document.getElementById("packageExpiry").value = expiryDate.toISOString().slice(0,10);
+      }
+    });
+
+    // ensure packageName also updates when user manually types
+    document.getElementById("packageName").addEventListener("input", () => {
+      // no-op but keeps UX consistent
+    });
+
+    // Allow closing scanner overlay by clicking outside (UX nicety)
+    document.getElementById("scannerOverlay").addEventListener("click", (ev) => {
+      if (ev.target.id === "scannerOverlay") closeScanner();
+    });
+
+    // Add small convenience: pressing Enter on barcode field tries to lookup
+    document.getElementById("packageBarcode").addEventListener("keydown", (ev) => {
+      if (ev.key === "Enter") {
+        ev.preventDefault();
+        const code = ev.target.value.trim();
+        if (code && mockBarcodeDB[code]) {
+          const info = mockBarcodeDB[code];
+          document.getElementById("packageName").value = info.name;
+          const expiryDate = new Date();
+          expiryDate.setDate(expiryDate.getDate() + info.shelf_life_days);
+          document.getElementById("packageExpiry").value = expiryDate.toISOString().slice(0,10);
+        } else {
+          alert("Barcode not in local DB. You can still add manually.");
+        }
+      }
+    });
+
   </script>
 </body>
 </html>
+
