@@ -2,6 +2,10 @@
 CREATE DATABASE fridgee;
 USE fridgee;
 
+-- Create Database
+CREATE DATABASE SmartKitchenDB;
+USE SmartKitchenDB;
+
 -- ==========================
 -- 1️⃣ Ingredients Table
 -- ==========================
